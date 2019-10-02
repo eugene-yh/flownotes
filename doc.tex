@@ -1,0 +1,378 @@
+\documentclass{flownotes}
+  
+\begin{document}
+% notes
+\begin{notebox}{Doc\#19072501}
+\tcbsubtitle{A digital template for my notebook}
+At some point in July, 2019,
+I got the idea of maybe  developing a digital version of my note taking method,
+using \XeLaTeX.
+I hope it could be easy and efficient to use and the same time it keeps all the features of my original on-paper note taking method.
+If this is possible, then I can get rid of a heavy notebook being carried all the time and yet I can still take notes like I have been doing.
+\tcbline
+The template is based on the \noteurl[tufte-book]{https://github.com/Tufte-LaTeX/tufte-latex} class.
+\tcbsubtitle{font settings and usage}
+{\centering
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{cccc}
+                \toprule
+                \multicolumn{1}{c}{\textbf{Language}} &
+                \multicolumn{1}{c}{\textbf{Style}} &
+                \multicolumn{1}{c}{\textbf{Font}} &
+                \multicolumn{1}{c}{\textbf{Examples}}  \\
+                \midrule
+
+                \begin{tabular}{l}
+                    Latin\\
+                \end{tabular}
+                &
+                \begin{tabular}{l}
+                    Serif\\
+                    Sans Serif\\
+                    Monospace\\
+                \end{tabular}
+                &
+                \begin{tabular}{r}
+                    Bembo\\
+                    GillSans\\
+                    Menlo\\
+                \end{tabular}
+                &
+                \begin{tabular}{r}
+                    ABC123\\
+                    \textsf{ABC123}\\
+                    \texttt{ABC123}\\
+                \end{tabular}
+                \\
+                \midrule
+                \begin{tabular}{l}
+                    CJK\\
+                \end{tabular}
+                &
+                \begin{tabular}{l}
+                    Serif\\
+                    Sans Serif\\
+                    Monospace\\
+                \end{tabular}
+                &
+                \begin{tabular}{r}
+                    SourceHanSerif\\
+                    SourceHanSans\\
+                    SourceHanMono\\
+                \end{tabular}
+                &
+                \begin{tabular}{r}
+                    汉字かな한글\\
+                    {\sans 汉字かな한글}\\
+                    {\sans 汉字かな한글}\\
+                \end{tabular}
+                \\
+                \bottomrule
+\end{tabular}}\par
+}
+\tcbline
+The default CJK glyphs are for Simplified Chinese. To change them for a specific CJK language, use the following commands:
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding\jp,
+                  commentstyle=\color{gray},
+                  keywordstyle=\color{blue}\bfseries]
+    \jp  % Japanese: 骨文才免返曜
+\end{lstlisting}
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding\kr,
+                  commentstyle=\color{gray},
+                  keywordstyle=\color{blue}\bfseries]
+    \kr  % Korean: 骨文才免返曜
+\end{lstlisting}
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding\sch,
+                  commentstyle=\color{gray},
+                  keywordstyle=\color{blue}\bfseries]
+    \sch  % Simplified Chinese: 骨文才免返曜
+\end{lstlisting}
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding\tch,
+                  commentstyle=\color{gray},
+                  keywordstyle=\color{blue}\bfseries]
+    \tch  % Traditional Chinese: 骨文才免返曜
+\end{lstlisting}
+% \makeatletter
+% \@for\sun:={rising,setting}\do{The sun is \sun. }
+% \makeatother
+\tcbline
+other useful commands:
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding,
+                  commentstyle=\color{gray},
+                  keywordstyle=\color{blue}\bfseries]
+    \coding  % Menlo + Source Han Mono
+    \sansall % Source Han Sans for all chars
+    \sans % GillSans + Source Han Sans
+\end{lstlisting}
+
+\end{notebox}
+
+\clearpage
+\rfnote[0.8cm]{2}{blue}{Example of referring to text in a note box}
+\rfnote[0.8cm]{4}{red}{Cascaded ref note}
+\rfnote[0.8cm]{3}{red}{\markinmargin{4}{purple}{Example}of referring to text in the margin}
+\begin{notebox}{Doc\#19072801}
+\tcbsubtitle{Continue on Doc\#19072501 -- reference notes}
+Drawing arrows to refer to some text is a very frequent in my notes.\markintext{2}{blue}{This example}links to the reference note on the margin of this page. It is done by:
+{\lstset{language=[LaTeX]{TeX},alsoletter={\\},emph={\\,/,notebox},emphstyle=\color{lime!60!black},alsoletter={/}}
+\begin{lstlisting}[
+                  basicstyle=\coding,
+                  commentstyle=\color{gray},
+                  frameround=fttt,
+                  frame=trBL,
+                  morekeywords={rfnote},
+                  morekeywords={markintext},
+                  keywordstyle=\color{blue}\bfseries]
+ % \clearpage
+   \rfnote[<offset>]{<ref id>}{<color>}{<text>}
+   \begin{notebox}/
+     \markintext{<red id>}{<color>}{<text>}
+   \end{notebox}
+\end{lstlisting}}
+\texttt{<offset>} means to adjust the end point of the arrow on the ref note. We need this because there is some unknown bug on getting the exact position of a tikz node on the margin. However, this is optional. It should be something like \texttt{0.8cm}. \texttt{<offset>} must be an integer. \texttt{<color>} can be \texttt{blue}, \texttt{red}, etc. The two \texttt{<text>}s are linked texts.
+\tcbline
+I also want to allow cascading as well.\markintext{3}{red}{This is an example.}It is done by:
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding,
+                  commentstyle=\color{gray}]
+  % \clearpage
+  \rfnote[<offset>]{<ref id #1>}{<color>}{<text>}
+  \rfnote[<offset>]{<ref id #2>}{<color>}{
+     \markinmargin{<ref id #1>}{<color>}{<text>}}
+  \begin{notebox}{<title>}
+     \markintext{<ref id #2>}{<color>}{<text>}
+  \end{notebox}
+\end{lstlisting}
+Note that when the linked \texttt{<text>} is in the margin, then you should use \texttt{\textbackslash markinmargin} instead of \texttt{\textbackslash markintext}.
+
+I recommend using the same color for a whole cascading chain so that it is clear to see.
+\tcbsubtitle{To structure a note}
+The main part of a note is located in a note box environment. we can use blue-background subtitles and dash lines to structure a note. The related commands are:
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding,
+                  commentstyle=\color{gray}]
+  \begin{notebox}{<title>}
+     \tcbsubtitle{<subtitle>}
+     \tcbline  % dash line
+  \end{notebox}
+\end{lstlisting}
+\end{notebox}
+
+
+\clearpage
+\rfnote[0.8cm]{5}{blue}{See here!}
+\begin{notebox}{Doc\#19072901}
+\tcbsubtitle{vertical texts}
+Since CJK texts can be formatted vertically, I think it is beneficial to have a simple command to do that.
+\cjkvert[\sans]{0.45\textwidth}{
+{\sch 这，是一句中文竖排字符。}\\
+\ \\
+{\jp これは、\ruby{縦書}{た\ \ て\ \ が}きの文字です。}\\
+\ \\
+不建议用半角字符ABC123\\
+\ \\
+建议用全角的ＡＢＣ１２３\\
+\ \\
+{\jp \symbol{"32FF}元年七月二十九日。}\\
+}
+To do this, use:
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding,
+                  commentstyle=\color{gray}]
+\cjkvert[<commands>]{<vertical length>}{<text>}
+\end{lstlisting}
+For example, to get the above output, \texttt{<commands>} should be \texttt{\textbackslash sans} and \texttt{<vertical length>} should be \texttt{0.45\textbackslash textwidth}
+\tcbline
+I aslo want to use Furigana when I am writting some Japanese texts. You can do this as the following example:
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding\jp,
+                  commentstyle=\color{gray}]
+  \ruby{外貨}{がいか}預金には、
+  \ruby{為替}{かわせ}差益や為替差損があります。
+\end{lstlisting}
+The result is:
+
+{\centering\jp \ruby{外貨}{が\ \ い\ \ か}預金には、
+\ruby{為替}{か\ \ わ\ \  せ}差益や為替差損があります。\par}
+\end{notebox}
+\begin{fullwidth}
+\begin{notebox}{Doc\#19073001}
+\tcbsubtitle{expand the note box to the whole page}
+We can do this using the \texttt{fullwidth} environment provided by \noteurl[tufte-book]{https://github.com/Tufte-LaTeX/tufte-latex} package itself outside the \texttt{notebox} environment.\markintext{5}{blue}{ref note should still work.}However, I don't recommend expanding the note box when using ref notes because some ref notes maybe hidden by the note box.
+
+\end{notebox}
+\end{fullwidth}
+\clearpage
+\begin{notebox}{Doc\#19080201}
+\tcbsubtitle{Q\&A}
+Q\&A is a very effective way of taking notes. It helps you to get the point of a note very quickly because knowledge is essentially about answering questions. If there are no questions, there is no knowledge.
+\qa[2]{The question goes here}{The answer goes here}
+To do this, use the following command:
+\begin{lstlisting}[language=TeX,
+                  basicstyle=\coding,
+                  commentstyle=\color{gray}]
+    \qa[<q&a id>]{<question>}{<answer>}
+\end{lstlisting}
+\end{notebox}
+\begin{notebox}{Doc\#190100101}
+\tcbsubtitle{Updates on the template}
+We now make \textbf{Bold} and \textit{Italic} fonts possible. Here is an example list for both Latin and CJK characters.
+
+{\centering
+\begin{tabular}{cccc}
+                \toprule
+                \multicolumn{1}{c}{\textbf{Language}} &
+                \multicolumn{1}{c}{\textbf{Style}} &
+                \multicolumn{1}{c}{\textbf{Bold}} &
+                \multicolumn{1}{c}{\textbf{Italic}}  \\
+                \midrule
+
+                \begin{tabular}{l}
+                    Latin\\
+                \end{tabular}
+                &
+                \begin{tabular}{l}
+                    Serif\\
+                    Sans Serif\\
+                    Monospace\\
+                \end{tabular}
+                &
+                \begin{tabular}{r}
+                    \textbf{ABC123}\\
+                    \textbf{\textsf{ABC123}}\\
+                    \textbf{\texttt{ABC123}}\\
+                \end{tabular}
+                &
+                \begin{tabular}{r}
+                    \textit{ABC123}\\
+                    \textit{\textsf{ABC123}}\\
+                    \textit{\texttt{ABC123}}\\
+                \end{tabular}
+                \\
+                \midrule
+                \begin{tabular}{l}
+                    CJK\\
+                \end{tabular}
+                &
+                \begin{tabular}{l}
+                    Serif\\
+                    Sans Serif\\
+                    Monospace\\
+                \end{tabular}
+                &
+                \begin{tabular}{r}
+                    \textbf{汉字かな한글}\\
+                    \textbf{\sans 汉字かな한글}\\
+                    \textbf{\coding 汉字かな한글}\\
+                \end{tabular}
+                &
+                \begin{tabular}{r}
+                    \textit{汉字かな한글}\\
+                    \textit{\sans 汉字かな한글}\\
+                    \textit{\coding 汉字かな한글}\\
+                \end{tabular}
+                \\
+                \bottomrule
+\end{tabular}\par
+}
+\tcbline
+We also make a new design on \textit{concept} element.\\
+We use a \textit{name-meaning-example} triplet to explain a concept. \\
+\concept{name}{meaning}{examples}
+To do this, use the following command:
+\begin{latexblock}{}{concept}{\small}
+    \concept[<name>]{<meaning>}{<examples>}
+\end{latexblock}
+\tcbline
+We use curly brackets to group concepts.
+\begin{itemize}
+\item A
+\item B
+  \begin{fork}
+  \item B1
+    \begin{fork}
+      \item B11
+      \item B12
+    \end{fork}
+  \item B2\tikzmark{a}
+  \item B3
+  \item B4\tikzmark{b}
+  \end{fork}
+\item C
+\end{itemize}
+\merge{a}{b}[merge to $\text{B}^\prime$]
+To use forking brackets, make sure you are inside an itemize or enumerate environment, and then use the following envronment:
+\begin{latexblock}{fork}{}{\small}
+    \item A
+    \begin{fork}
+      \item A1
+      \item A2
+    \end{fork}
+\end{latexblock}
+To use merging brackets, mark the two endpoints with {\coding \textbackslash tikzmark\{name1\}} and {\coding \textbackslash tikzmark\{name2\}}, and then use the following commands after them:
+\begin{latexblock}{}{merge}{\small}
+    \merge{name1}{name2}[concept C]
+\end{latexblock}
+\tcbline
+Another update is that we now make listing latex code more easy with the following environment (delete the space in {\coding latexbloc\ k}):
+\begin{latexblock}{}{merge}{\footnotesize}
+  \begin{latexbloc k}{emph1,...}{kw1,...}{style commands}
+    \keyword{emphasized word}
+  \end{latexbloc k}
+\end{latexblock}
+\end{notebox}
+\clearpage
+\begin{fullwidth}
+\begin{notebox}{Doc\#19100201}
+\tcbsubtitle{updates on text emphasis}
+{\centering
+\begin{tabular}{cc}
+                \toprule
+                \multicolumn{1}{c}{\textbf{Command}} &
+                \multicolumn{1}{c}{\textbf{Effect}} \\
+                \midrule
+
+                \begin{tabular}{l}
+                    {\coding\textbackslash strikethrough[color]\{text\}}\\
+                    {\coding\textbackslash crossout[color]\{text\}}\\
+                    {\coding\textbackslash highlight[color]\{text\}}\\
+                    {\coding\textbackslash
+                    underline[color]\{text\}}\\
+                    {\coding\textbackslash underdbline[color]\{text\}}\\
+                    {\coding\textbackslash underwave[color]\{text\}}\\
+                    {\coding\textbackslash underdot[color]\{text\}}\\
+                    {\coding\textbackslash undertriangle[color]\{symbol\}\{text\}}\\
+                    {\coding\textbackslash undercircle[color]\{symbol\}\{text\}}\\
+                    {\coding\textbackslash undercross[color]\{symbol\}\{text\}}\\
+                \end{tabular}
+                &
+                \begin{tabular}{l}
+                    \strikethrough[red]{AaBbCc123汉字かな한글}\ \\
+                    \crossout[red]{AaBbCc123汉字かな한글}\\
+                    \highlight{AaBbCc123汉字かな한글}\\
+                    \underline[red]{AaBbCc123汉字かな한글}\\
+                    \underdbline[red]{AaBbCc123汉字かな한글}\\
+                    \underwave[red]{AaBbCc123汉字かな한글}\\
+                    \underdot[red]{AaBbCc123汉字かな한글}\\
+                    \undertriangle[red]{AaBbCc123汉字かな한글}\\
+                    \undercircle[red]{AaBbCc123汉字かな한글}\\
+                    \undercross[red]{AaBbCc123汉字かな한글}\\
+
+                \end{tabular}
+                \\
+                \bottomrule
+\end{tabular}\par
+}
+\end{notebox}
+
+\end{fullwidth}
+\clearpage
+\bibliography{docbib}
+\bibliographystyle{abbrv}
+\end{document}
+
